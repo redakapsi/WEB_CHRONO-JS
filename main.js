@@ -1,43 +1,54 @@
 let timer;
-let hours = 0, minutes = 0, seconds = 0, milliseconds = 0;
-let isRunning = false;
-
-function updateDisplay() {
-    const h = String(hours).padStart(2, '0');
-    const m = String(minutes).padStart(2, '0');
-    const s = String(seconds).padStart(2, '0');
-    const ms = String(milliseconds).padStart(2, '0');
-    document.getElementById("time").textContent = `${h}:${m}:${s}:${ms}`;
+let s = 0;
+let m=0;
+let h=0;
+let mili=0;
+isrunning  = false;
+function update()
+{
+    const hours = String(h).padStart(2,'0');
+    const munites = String(m).padStart(2,'0');
+    const seconds = String(s).padStart(2,'0');
+    const miliseconds = String(mili).padStart(2,'0');
+    document.getElementById("time").textContent = `${hours}:${munites}:${seconds}:${miliseconds}`;
 }
+function startTimer()
+{
+    if(isrunning) return;
+    isrunning =true;
+    timer = setInterval(()=>
+        {
+            mili++;
+            if(mili>=99)
+            {
+                mili =0;
+                s++;
+            }
+            if(s>=59)
+            {
+                s=0;
+                m++
+            }
+            if(m>=59)
+            {
+                m=0;
+                h++;
+            }
+            update();
 
-function startTimer() {
-    if (isRunning) return;
-    isRunning = true;
-    timer = setInterval(() => {
-        milliseconds++;
-        if (milliseconds >= 100) {
-            milliseconds = 0;
-            seconds++;
-        }
-        if (seconds >= 60) {
-            seconds = 0;
-            minutes++;
-        }
-        if (minutes >= 60) {
-            minutes = 0;
-            hours++;
-        }
-        updateDisplay();
-    }, 10);
+        },10)
 }
-
-function pauseTimer() {
-    isRunning = false;
+function pauseTimer()
+{
     clearInterval(timer);
+    update();
+    isrunning =false;
 }
-
-function resetTimer() {
+function resetTimer()
+{
     pauseTimer();
-    hours = minutes = seconds = milliseconds = 0;
-    updateDisplay();
+    h=m=s=mili=0;
+    update();
+    
+
 }
